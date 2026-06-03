@@ -58,31 +58,40 @@ Replace `gemini-cli` and `opencode` with the actual tools being used.
 
 Each agent file follows the structure defined in `.ai/context/roles.md`.
 
-## After Agent Files Are Created
+## Starting a Session
 
-Run the **Code Execution** agent with this prompt:
+After the agent files are created, start the **Code Execution** agent with this prompt:
 
 ```
 Read ./<your-agent-file>.md and follow the startup sequence.
-Then read .ai/context/setup-flow.md and execute it step by step.
+Then read .ai/context/entry.md and follow it.
 ```
 
-Example for gemini-cli as Code Execution:
+The agent will automatically determine if it needs to perform a new setup or handle a new feature request based on the project state.
 
-```
-Read ./gemini.md and follow the startup sequence.
-Then read .ai/context/setup-flow.md and execute it step by step.
-```
+## Working on Existing Projects (Re-entry)
 
-The agent will follow `.ai/context/setup-flow.md` step by step:
+If the project setup is already complete and you want to start a new task (add a feature, fix a bug):
 
-1. **Ask questions** from `.ai/quest/setup.md` and `.ai/quest/learning.md` if clarification files don't exist yet
-2. **Scaffold & install** — Goravel v1.17 (Go 1.23), then all dependencies
+1.  **Prompt**:
+    ```
+    Read ./<your-agent-file>.md
+    Read .ai/context/entry.md
+    
+    Task: [Describe your new feature or change here]
+    ```
+2.  **AI Response**: The AI will skip the setup phase, read your project history (`decision-logs.md`), sync with the `user-story.md`, and generate a new implementation strategy in `strategy.md`.
+3.  **Review**: Validate the strategy before the AI starts coding.
+
+## Setup Flow (Initial Only)
+
+If the project is new, the agent will follow `.ai/context/setup-flow.md` step by step:
+
+1. **Ask questions** from `.ai/quest/setup.md` and `.ai/quest/learning.md` (or pre-fill from `user-story.md`)
+2. **Scaffold & install** — Goravel v1.17 (Go 1.23) and dependencies
 3. **Generate application key** using Artisan
-4. **Setup AI roles** — generate `.ai/clarification/ai-roles.md` if missing
-5. **Check API docs** — ask if you want to add `.ai/work/api.docs.md` first (optional)
-6. **Generate workflow** — writes `.ai/work/workflow.md` with step-by-step execution plan
-7. **Generate strategy** — writes `.ai/work/strategy.md` with implementation plan
-8. **Wait for validation** — pauses and waits for your approval before writing any code
-9. **Execute** — after validation, implements features (with mock data if API docs are not available)
-10. **Audit** — Code Audit agent reviews the result using `.ai/work/audit.md`
+4. **Setup AI roles** — generate `.ai/clarification/ai-roles.md`
+5. **Check API docs** — optional step to add `.ai/work/api.docs.md`
+6. **Workflow & Strategy** — planning the implementation
+7. **Validation** — wait for your approval
+8. **Execute & Audit** — implement and review
