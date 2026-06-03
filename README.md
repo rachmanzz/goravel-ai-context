@@ -88,9 +88,9 @@ If the project setup is already complete and you want to start a new task (add a
 If the project is new, the agent will follow `.ai/context/setup-flow.md` step by step:
 
 1. **Ask questions** from `.ai/quest/setup.md` and `.ai/quest/learning.md` (or pre-fill from `user-story.md`)
-2. **Scaffold & install** — Goravel v1.17 (Go 1.23) and dependencies
-3. **Generate application key** using Artisan
-4. **Setup AI roles** — generate `.ai/clarification/ai-roles.md`
+2. **Setup AI roles** — generate `.ai/clarification/ai-roles.md`
+3. **Scaffold & install** — Goravel v1.17 (Go 1.23) and dependencies
+4. **Generate application key** using Artisan
 5. **Check API docs** — optional step to add `.ai/work/api.docs.md`
 6. **Workflow & Strategy** — planning the implementation
 7. **Validation** — wait for your approval
