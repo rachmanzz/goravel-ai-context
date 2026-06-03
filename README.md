@@ -5,8 +5,17 @@
 To clone this project template:
 
 ```bash
-npx degit rachmanzz/ai-context-goravel your-project
+npx degit rachmanzz/ai-context-goravel goravel-ai-context
 ```
+
+## Before Starting (Recommended)
+
+To ensure the AI understands your specific requirements, it is highly recommended to create a **User Story** file:
+
+- **File Path**: `.ai/clarification/user-story.md`
+- **Content**: Describe the features, workflows, and business logic you want to implement.
+
+Providing this file "if possible" will significantly improve the accuracy of the generated strategy and implementation.
 
 This project uses two AI roles: **Code Execution** (build/implement) and **Code Audit** (review/check).
 
