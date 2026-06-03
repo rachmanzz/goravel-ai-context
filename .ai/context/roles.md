@@ -1,61 +1,46 @@
 # AI Roles
 
-This project supports two distinct AI roles that handle different aspects of development.
+This document defines the roles and responsibilities for AI agents participating in the project.
 
 ## Role Types
 
 ### 1. Code Execution
-- Handles all code generation, installation, scaffolding, and implementation
-- Must follow `.ai/context/setup-flow.md` from the start
-- Responsible for writing code, running commands, and building features
-- Executes the strategy defined in `.ai/work/strategy.md`
+- **Who**: The primary builder and implementer.
+- **Responsibility**: Scaffolding, installation, code generation, and feature implementation.
+- **Primary Guide**: Must follow the protocols defined in `.ai/context/execution.md` and `.ai/context/setup-flow.md`.
+- **Primary Files**: Writes to `.ai/work/strategy.md`, `.ai/work/workflow.md`, and `.ai/work/decision-logs.md`.
 
 ### 2. Code Audit
-- Reviews code quality, security, and consistency
-- Runs checks from `.ai/work/audit.md`
-- Provides findings that feed into the next strategy iteration
-- Does NOT write or modify production code
+- **Who**: The reviewer and quality gatekeeper.
+- **Responsibility**: Reviewing code quality, security, and consistency.
+- **Primary Guide**: Must follow the protocols defined in `.ai/work/audit.md`.
+- **Constraint**: Does **NOT** write or modify production code.
 
 ## Separation of Concerns
 
-Each role should be handled by a different AI instance/tool to maintain clear separation:
-- **Code Execution AI** — focused on building and implementing
-- **Code Audit AI** — focused on reviewing and validating
+To maintain an unbiased development process, each role should be handled by a different AI instance or tool:
+- **Code Execution AI**: Dedicated to implementation and solving technical requirements.
+- **Code Audit AI**: Dedicated to validation and identifying potential issues.
 
-This ensures unbiased audits and focused execution.
+## Role Assignment
 
-## Role Clarification
+Final role assignments are documented in `.ai/clarification/ai-roles.md`. This file acts as the source of truth for which tool/model is assigned to which role.
 
-AI roles are defined in `.ai/clarification/ai-roles.md`. This file specifies which AI/tool handles each role.
+## Agent File Generation
 
-## Agent File Generation Rules
-
-Agent files are **not** created during setup. They are generated **when the AI receives its role mandate**. The AI reads `.ai/clarification/ai-roles.md` to confirm its assigned role, then generates the appropriate agent file at root `/`.
+When an AI receives its role mandate, it must generate its own agent file at the project root (`/`) based on its assigned role in `ai-roles.md`.
 
 ### Code Execution Agent File
-
-Generate at root `/` when assigned the Code Execution role. File name follows the tool name from `ai-roles.md`:
-- Tool `opencode` → `/agents.md`
-- Tool `gemini-cli` → `/gemini.md` (or `/gemini.md` if also used for audit, differentiate by purpose)
-- Other tool → `/<tool-name>.md`
-
-Must contain:
-- **Role declaration** — confirms this agent handles Code Execution
-- **Startup sequence** — mention `.ai/clarification/ai-roles.md`, `.ai/context/roles.md`, `.ai/context/setup-flow.md`
-- **Context files reference** — list all `.ai/context/` files relevant to execution
-- **Work files reference** — `.ai/work/strategy.md`, `.ai/work/workflow.md`, `.ai/work/api.docs.md`, `.ai/work/audit.md`
-- **Rules** — strategy-first, user validation required, SRP, API consistency, type safety, post-execution audit
+- **File Name**: Based on the tool (e.g., `/gemini.md`, `/agents.md`).
+- **Content Requirements**:
+    - **Role Declaration**: Explicitly state "This agent handles Code Execution".
+    - **Reference**: Must point to `.ai/context/execution.md` as its primary execution protocol.
+    - **Startup Sequence**: Include instructions to read `ai-roles.md`, `roles.md`, and `setup-flow.md`.
 
 ### Code Audit Agent File
-
-Generate at root `/` when assigned the Code Audit role. File name follows the tool name from `ai-roles.md`:
-- Tool `gemini-cli` → `/gemini.md`
-- Tool `opencode` → `/agents.md`
-- Other tool → `/tools-agents.md`
-
-Must contain:
-- **Role declaration** — confirms this agent handles Code Audit
-- **Startup sequence** — mention `.ai/clarification/ai-roles.md`, `.ai/context/roles.md`, `.ai/work/strategy.md`, `.ai/work/audit.md`
-- **Audit process** — type check, lint, review code quality, document findings in `.ai/work/audit.md`
-- **Boundaries** — no source file modification, no dependency changes, no build/dev commands
-- **Output** — summarize findings, suggest improvements for next strategy iteration
+- **File Name**: Based on the tool (e.g., `/gemini.md`, `/agents.md`).
+- **Content Requirements**:
+    - **Role Declaration**: Explicitly state "This agent handles Code Audit".
+    - **Reference**: Must point to `.ai/work/audit.md` as its primary review protocol.
+    - **Startup Sequence**: Include instructions to read `ai-roles.md`, `roles.md`, and the target `strategy.md`.
+    - **Boundaries**: Strictly prohibit any code modification commands.
