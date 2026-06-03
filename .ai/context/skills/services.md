@@ -12,6 +12,15 @@ Controller → Service → Model / Repository
 - **Service**: Business logic, facade calls, database operations, orchestration
 - **Model**: Data structure, query scopes, relationships
 
+## Repository Usage
+
+Optional. Use Repository when:
+- Query complexity is high
+- Multiple services share the same queries
+- Database access needs abstraction
+
+Otherwise Service may access ORM directly via `facades.Orm()`.
+
 ## Mandatory Standards
 
 ### Controller Restrictions
@@ -88,27 +97,10 @@ type UserController struct {
 func NewUserController(userService services.UserService) *UserController {
     return &UserController{userService: userService}
 }
-```
 
-## Transaction Management
+## Injection Strategy
 
-Multi-step operations must use transactions inside the Service, not the Controller.
-
-```go
-func (s *UserServiceImpl) Register(name, email string) (*models.User, error) {
-    var user models.User
-    err := facades.Orm().Transaction(func(tx orm.Query) error {
-        tx.Create(&user)
-        // other operations within transaction
-        return nil
-    })
-    return &user, err
-}
-```
-
-## Controller Injection
-
-Most services are injected via constructor directly:
+**Default — Constructor Injection:**
 
 ```go
 type UserController struct {
@@ -119,6 +111,24 @@ func NewUserController(userService services.UserService) *UserController {
     return &UserController{userService: userService}
 }
 ```
+
+**Exception — Service Container Resolution:**
+
+Use `facades.App().Make()` only for services requiring runtime initialization or external SDK bootstrapping (e.g., Firebase, AWS, Redis cluster).
+
+```go
+func (r *OrderController) SendNotification(ctx http.Context) http.Response {
+    fb, err := services.FirebaseApp()
+    if err != nil {
+        return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+            "error": "Firebase unavailable",
+        })
+    }
+    fb.SendPushNotification(...)
+}
+```
+
+Rule: If the service can be constructed with static arguments, use constructor injection. If the service needs runtime configuration or SDK bootstrapping, use the resolver pattern.
 
 ## Provider Binding (Complex Initialization)
 
@@ -198,8 +208,33 @@ func (r *OrderController) SendNotification(ctx http.Context) http.Response {
 
 ## Best Practices
 
-1. **Stateless**: Services should not hold state. All dependencies are injected via constructor.
+1. **Stateless**: Services must not hold state. Forbidden patterns:
+
+```go
+// FORBIDDEN — holds state
+type UserService struct {
+    CurrentUser models.User
+}
+
+// FORBIDDEN — internal cache
+type UserService struct {
+    cache map[string]any
+}
+```
+
+All dependencies are injected via constructor or resolved from the container at call time.
 2. **Single Responsibility**: One service per domain aggregate (e.g., `UserService`, `OrderService`).
 3. **Interface-First**: Define service interfaces in the same file as the implementation.
-4. **Thin Controllers**: Controllers should be ~10-20 lines. Anything larger likely belongs in a Service.
+4. **Thin Controllers**: Controllers should remain thin. Large business logic belongs in Services — a 25-line controller can be fine; an 8-line controller full of business logic is not.
 5. **Testability**: Services are testable without HTTP context — pure Go unit tests.
+
+## Forbidden Patterns
+
+The following patterns must never appear in the codebase:
+
+- Controllers calling `facades.Orm()`
+- Controllers calling `facades.Cache()`
+- Controllers opening or managing transactions
+- Services returning HTTP responses (e.g., `ctx.Response().Json(...)`)
+- Services accessing `http.Context`
+- Models calling external APIs or facades
