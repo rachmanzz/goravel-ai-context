@@ -5,19 +5,21 @@ This document defines the step-by-step flow for setting up a new project. Follow
 ## 1. Check Existing Clarification
 
 Look inside `.ai/clarification/` for these files:
+- `user-story.md` — optional but highly recommended user requirements
 - `project-setup.md` — contains answers from `@.ai/quest/setup.md`
 - `project-learning.md` — contains answers from `@.ai/quest/learning.md`
 
-### If both files exist AND contain complete answers:
+### If project-setup.md and project-learning.md exist AND contain complete answers:
 - Skip all questions
 - Read their contents and use them directly
 - Proceed to step 3
 
-### If either file is missing or incomplete:
-- Ask the user the questions from `@.ai/quest/setup.md`
-- Ask the user the questions from `@.ai/quest/learning.md`
-- Generate `./.ai/clarification/project-setup.md` with the answers
-- Generate `./.ai/clarification/project-learning.md` with the answers
+### If either project-setup.md or project-learning.md is missing or incomplete:
+- **First Step**: Check if `.ai/clarification/user-story.md` exists. If it does, read it carefully to understand the context and requirements. Use this information to pre-fill or answer as many questions as possible from the quests.
+- Ask the user the remaining questions from `@.ai/quest/setup.md`.
+- Ask the user the remaining questions from `@.ai/quest/learning.md`.
+- Generate `./.ai/clarification/project-setup.md` with the final answers.
+- Generate `./.ai/clarification/project-learning.md` with the final answers.
 - Proceed to step 2
 
 ## 2. Validate Clarification
