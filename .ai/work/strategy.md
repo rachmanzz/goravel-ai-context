@@ -11,4 +11,4 @@ Always perform a final check after execution to ensure no errors were introduced
 After the strategy has been successfully executed and the task is complete, you are required to delete the strategy entry from this file.
 
 # Strategies
-[ do not delete this line, please put your stategy down bellow]
+[ do not delete this line, please put your strategy down below]

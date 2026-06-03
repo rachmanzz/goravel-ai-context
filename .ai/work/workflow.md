@@ -6,4 +6,4 @@ This file outlines the step-by-step execution plan for complex tasks, database m
 - Do not skip validation steps or automated tests defined in this workflow.
 
 # Execution Workflow
-[ do not delete this line, please put your execution workflow down bellow]
+[ do not delete this line, please put your execution workflow down below]

@@ -2,7 +2,7 @@
 
 This document serves as the single source of truth for all API endpoints. Every route created or modified must be documented here following the template below.
 
-[ do not delete this line, please put your api documentation down bellow]
+[ do not delete this line, please put your api documentation down below]
 
 ---
 
