@@ -38,4 +38,27 @@ Each module must have a single, well-defined purpose.
 - **Decoupled Logic**: Keep core logic pure and decoupled from framework-specific APIs where possible (e.g., business logic should be framework-agnostic).
 - **Composition over Inheritance**: Use functional composition and middleware chains to build flexible API pipelines.
 
-By adhering to these standards, we ensure the Project is a trustworthy and efficient tool.
+## Forbidden Patterns
+
+These patterns are explicitly prohibited. AI must not generate code that follows these anti-patterns under any circumstances.
+
+### In Controllers
+- Business logic inside controllers (delegate to Services)
+- Direct database access (queries, raw SQL, ORM calls) inside controllers
+- Hardcoded configuration values or secrets
+
+### In Models & Data Layer
+- Global mutable state (e.g., package-level variables for caching data without synchronization)
+- Accessing HTTP request/response context inside models
+
+### Error Handling
+- `panic()` or `log.Fatal()` for recoverable errors (use proper error returns)
+- Returning raw internal error messages or stack traces to API clients
+- Swallowing errors with `_ =` without logging or handling
+
+### Security
+- Hardcoded secrets, API keys, or passwords in source code
+- Disabling or bypassing input validation
+- Exposing internal system information through error responses
+
+By adhering to these standards and avoiding forbidden patterns, we ensure the Project is a trustworthy and efficient tool.

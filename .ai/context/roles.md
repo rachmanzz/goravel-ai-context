@@ -31,14 +31,14 @@ Final role assignments are documented in `.ai/clarification/ai-roles.md`. This f
 When an AI receives its role mandate, it must generate its own agent file at the project root (`/`) based on its assigned role in `ai-roles.md`.
 
 ### Code Execution Agent File
-- **File Name**: Based on the tool (e.g., `/gemini.md`, `/agents.md`).
+- **File Name**: Based on the tool with `-execution` suffix (e.g., `/gemini-execution.md`, `/opencode-execution.md`).
 - **Content Requirements**:
     - **Role Declaration**: Explicitly state "This agent handles Code Execution".
     - **Reference**: Must point to `.ai/context/execution.md` as its primary execution protocol.
     - **Startup Sequence**: Include instructions to read `ai-roles.md`, `roles.md`, and `entry.md`.
 
 ### Code Audit Agent File
-- **File Name**: Based on the tool (e.g., `/gemini.md`, `/agents.md`).
+- **File Name**: Based on the tool with `-audit` suffix (e.g., `/gemini-audit.md`, `/opencode-audit.md`).
 - **Content Requirements**:
     - **Role Declaration**: Explicitly state "This agent handles Code Audit".
     - **Reference**: Must point to `.ai/work/audit.md` as its primary review protocol.

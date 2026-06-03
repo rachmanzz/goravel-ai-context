@@ -13,6 +13,7 @@ app/
 │   ├── middleware/ # HTTP middleware
 │   └── kernel.go   # HTTP kernel registration
 ├── models/         # ORM models (Gorm based)
+├── services/       # Business logic and orchestration
 └── providers/      # Service providers (Dependency Injection)
 bootstrap/          # Application bootstrapping (app.go)
 config/             # Configuration files
@@ -42,20 +43,29 @@ main.go             # Application entry point
 - Can contain model-specific logic or hooks.
 - **Rule**: Encapsulate database interactions within models or repositories.
 
-### 4. Providers (`app/providers/`)
+### 4. Services (`app/services/`)
+- Encapsulates business logic and domain rules.
+- Handles database operations, caching, and external API calls.
+- Orchestrates multiple models and manages transactions.
+- **Rule**: Services must be stateless and depend on interfaces, not concrete types.
+- **Rule**: Never access HTTP context (`http.Context`) inside services — keep them transport-agnostic.
+
+### 5. Providers (`app/providers/`)
 - The central place to configure the application.
 - Used for binding services into the Service Container.
 - Registering event listeners, middleware, and routes.
 - **Rule**: Use providers for dependency injection and framework extension.
 
-### 5. Config (`config/`)
+### 6. Config (`config/`)
 - Contains all application configuration.
 - Values are typically pulled from `.env`.
 - **Rule**: Never hardcode configuration values; use the `config` package.
 
 ## Implementation Pattern (Example)
 
-### Route & Controller
+### Route & Controller (With Service Layer)
+
+Controllers must delegate business logic and database operations to Services.
 
 ```go
 // routes/api.go
@@ -64,26 +74,24 @@ facades.Route().Get("/users/{id}", userController.Show)
 // app/http/controllers/user_controller.go
 func (r *UserController) Show(ctx http.Context) http.Response {
     id := ctx.Request().Input("id")
-    var user models.User
-    if err := facades.Orm().Query().Find(&user, id); err != nil {
-        return ctx.Response().Json(http.StatusInternalServerError, http.Json{
-            "error": err.Error(),
+
+    user, err := r.userService.GetByID(id)
+    if err != nil {
+        return ctx.Response().Json(http.StatusNotFound, http.Json{
+            "error": "User not found",
         })
     }
+
     return ctx.Response().Success().Json(http.Json{
         "data": user,
     })
 }
-```
 
-### Dependency Injection (Service Provider)
-
-```go
-// app/providers/app_service_provider.go
-func (receiver *AppServiceProvider) Register(app foundation.Application) {
-    app.Bind("userService", func(app foundation.Application) (any, error) {
-        return &services.UserServiceImpl{}, nil
-    })
+// app/services/user_service.go
+func (s *UserServiceImpl) GetByID(id string) (*models.User, error) {
+    var user models.User
+    err := facades.Orm().Query().Find(&user, id)
+    return &user, err
 }
 ```
 
