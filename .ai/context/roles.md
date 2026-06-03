@@ -7,7 +7,7 @@ This document defines the roles and responsibilities for AI agents participating
 ### 1. Code Execution
 - **Who**: The primary builder and implementer.
 - **Responsibility**: Scaffolding, installation, code generation, and feature implementation.
-- **Primary Guide**: Must follow the protocols defined in `.ai/context/execution.md` and `.ai/context/setup-flow.md`.
+- **Primary Guide**: Must follow the protocols defined in `.ai/context/entry.md`, `.ai/context/execution.md`, and `.ai/context/setup-flow.md`.
 - **Primary Files**: Writes to `.ai/work/strategy.md`, `.ai/work/workflow.md`, and `.ai/work/decision-logs.md`.
 
 ### 2. Code Audit
@@ -35,7 +35,7 @@ When an AI receives its role mandate, it must generate its own agent file at the
 - **Content Requirements**:
     - **Role Declaration**: Explicitly state "This agent handles Code Execution".
     - **Reference**: Must point to `.ai/context/execution.md` as its primary execution protocol.
-    - **Startup Sequence**: Include instructions to read `ai-roles.md`, `roles.md`, and `setup-flow.md`.
+    - **Startup Sequence**: Include instructions to read `ai-roles.md`, `roles.md`, and `entry.md`.
 
 ### Code Audit Agent File
 - **File Name**: Based on the tool (e.g., `/gemini.md`, `/agents.md`).

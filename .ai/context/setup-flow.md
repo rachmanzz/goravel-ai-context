@@ -1,19 +1,6 @@
 # Setup Flow
 
-This document defines the step-by-step flow for setting up a new project. Follow these instructions in order.
-
-## Context Loading Priority
-
-When starting a session or resolving information conflicts, the following order of precedence applies (1 is highest priority):
-
-1.  `.ai/clarification/ai-roles.md` (Who does what)
-2.  `.ai/clarification/user-story.md` (What the user wants)
-3.  `.ai/clarification/project-setup.md` (Technical setup answers)
-4.  `.ai/clarification/project-learning.md` (Architecture & logic answers)
-5.  `.ai/work/decision-logs.md` (History of technical choices)
-6.  `.ai/work/api.docs.md` (API contracts)
-7.  `.ai/work/workflow.md` (Execution sequence)
-8.  `.ai/work/strategy.md` (Implementation plan)
+This document defines the step-by-step flow for setting up a new project from scratch. Follow these instructions in order.
 
 ## 1. Check Existing Clarification
 
@@ -154,14 +141,3 @@ Create or update these files:
 - If external services are not yet available, create mock data/responses using Goravel middleware or local state to demonstrate functionality
 - Ensure all controllers, middleware, and data layers are properly connected
 - Run final checks to confirm no errors were introduced
-
-## Existing Project Changes
-
-If the initial setup has already been completed and you are tasked with adding a new feature or making changes:
-
-1.  **Skip Setup Phases**: Do not repeat scaffolding or basic installation steps.
-2.  **Read History**: Read `decision-logs.md` to understand previous technical choices.
-3.  **Sync Context**: Read `workflow.md` and `user-story.md` to align with the overall project goals.
-4.  **Plan**: Generate a new entry in `strategy.md` specifically for the requested change.
-5.  **Validation**: Wait for user approval of the new strategy before implementing.
-6.  **Execute**: Follow the "Execute Strategy" protocol (Step 12) for the new task.
