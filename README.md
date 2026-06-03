@@ -5,7 +5,7 @@
 To clone this project template:
 
 ```bash
-npx degit rachmanzz/ai-context-goravel goravel-ai-context
+npx degit rachmanzz/goravel-ai-context project-name
 ```
 
 ## Before Starting (Recommended)
